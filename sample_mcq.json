@@ -1,0 +1,50 @@
+{
+  "title": "Polity — Fundamental Rights",
+  "questions": [
+    {
+      "id": 1,
+      "q": "Which Article of the Indian Constitution abolishes untouchability?",
+      "options": ["Article 14", "Article 15", "Article 17", "Article 21"],
+      "answer": 2,
+      "explanation": "Article 17 abolishes untouchability and forbids its practice in any form."
+    },
+    {
+      "id": 2,
+      "q": "The Right to Education (RTE) Act, 2009 is related to which Fundamental Right?",
+      "options": [
+        "Right to Equality",
+        "Right against Exploitation",
+        "Right to Freedom",
+        "Right to Life and Personal Liberty"
+      ],
+      "answer": 3,
+      "explanation": "Article 21A (inserted by 86th Amendment) mandates free and compulsory education and is part of Right to Life."
+    },
+    {
+      "id": 3,
+      "q": "Which of the following Fundamental Rights cannot be suspended even during National Emergency?",
+      "options": [
+        "Article 19",
+        "Article 20 and Article 21",
+        "Article 14",
+        "Article 32"
+      ],
+      "answer": 1,
+      "explanation": "Articles 20 and 21 cannot be suspended even during National Emergency under Article 359."
+    },
+    {
+      "id": 4,
+      "q": "Writs can be issued by the Supreme Court under which Article?",
+      "options": ["Article 13", "Article 32", "Article 226", "Article 142"],
+      "answer": 1,
+      "explanation": "Article 32 empowers the Supreme Court to issue writs for enforcement of Fundamental Rights. Article 226 is for High Courts."
+    },
+    {
+      "id": 5,
+      "q": "Which Article prohibits traffic in human beings and forced labour?",
+      "options": ["Article 23", "Article 24", "Article 25", "Article 26"],
+      "answer": 0,
+      "explanation": "Article 23 prohibits traffic in human beings, begar and other forms of forced labour."
+    }
+  ]
+}
