@@ -8,7 +8,7 @@ const hardcodedConfig = {
   owner: 'Peddanagalla',        // your GitHub username, e.g. 'harikrishna'
   repo: 'upsc-notes',         // your notes repo name, e.g. 'upsc-notes'
   branch: 'main',   // branch name
-  token: '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',        // your GitHub PAT, e.g. 'ghp_xxxxxxxxxxxx'
+  token: '',        // your GitHub PAT, e.g. 'ghp_xxxxxxxxxxxx'
 }
 
 export default hardcodedConfig

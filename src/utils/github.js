@@ -20,11 +20,15 @@ function getConfig() {
   }
 }
 
+// function headers() {
+//   const { token } = getConfig()
+//   const h = { Accept: 'application/vnd.github.v3+json' }
+//   if (token) h['Authorization'] = `Bearer ${token}`
+//   return h
+// }
+
 function headers() {
-  const { token } = getConfig()
-  const h = { Accept: 'application/vnd.github.v3+json' }
-  if (token) h['Authorization'] = `Bearer ${token}`
-  return h
+  return { Accept: 'application/vnd.github.v3+json' }
 }
 
 // GET /repos/:owner/:repo/contents/:path
