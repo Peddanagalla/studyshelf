@@ -7,61 +7,64 @@ import MCQImporter from './MCQImporter.jsx'
 
 /* ─── Styles ─────────────────────────────────────────────────────────────── */
 const s = {
-  wrap: { display: 'flex', height: '100%', overflow: 'hidden' },
+  wrap: { display: 'flex', height: '100%', overflow: 'hidden', minHeight: '100vh' },
   sidebar: {
-    width: 248, flexShrink: 0,
+    width: 260, minWidth: 240, flexShrink: 0,
     background: 'var(--bg2)',
-    borderRight: '1px solid var(--border)',
+    borderRight: '1px solid rgba(255,255,255,0.05)',
     overflowY: 'auto',
     display: 'flex', flexDirection: 'column',
+    boxShadow: '1px 0 0 rgba(255,255,255,0.04)',
   },
-  sidebarTop: { padding: '0.75rem 0.75rem 0.5rem', borderBottom: '1px solid var(--border)' },
+  sidebarTop: { padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' },
   importBtn: {
     display: 'flex', alignItems: 'center', gap: '0.5rem',
-    width: '100%', padding: '0.5rem 0.75rem',
-    borderRadius: 'var(--radius)', border: '1px dashed rgba(201,168,76,0.3)',
-    background: 'var(--gold-glow)', color: 'var(--gold)',
-    fontSize: '0.8rem', fontWeight: 500, cursor: 'pointer',
-    transition: 'all 0.15s', fontFamily: 'var(--font-body)',
+    width: '100%', padding: '0.7rem 0.85rem',
+    borderRadius: '999px', border: '1px dashed rgba(16,185,129,0.3)',
+    background: 'var(--accent-glow)', color: 'var(--accent)',
+    fontSize: '0.9rem', fontWeight: 500, cursor: 'pointer',
+    transition: 'all 0.15s ease', fontFamily: 'var(--font-body)',
   },
-  sidebarList: { flex: 1, padding: '0.4rem 0', overflowY: 'auto' },
+  sidebarList: { flex: 1, padding: '0.75rem 0', overflowY: 'auto' },
   sectionHead: {
-    padding: '0.5rem 0.9rem 0.2rem',
-    fontSize: '0.67rem', letterSpacing: '0.1em',
+    padding: '0.75rem 1rem 0.3rem',
+    fontSize: '0.72rem', letterSpacing: '0.12em',
     textTransform: 'uppercase', color: 'var(--text-faint)',
   },
   item: {
-    display: 'flex', alignItems: 'center', gap: '0.5rem',
-    padding: '0.42rem 0.9rem',
-    fontSize: '0.855rem', color: 'var(--text-dim)',
-    cursor: 'pointer', transition: 'all 0.12s',
+    display: 'flex', alignItems: 'center', gap: '0.55rem',
+    padding: '0.75rem 1rem',
+    fontSize: '0.9rem', color: 'var(--text-dim)',
+    cursor: 'pointer', transition: 'all 0.14s ease',
+    borderRadius: 'var(--radius)',
     borderLeft: '2px solid transparent',
     userSelect: 'none',
     wordBreak: 'break-word',
   },
   itemActive: {
-    color: 'var(--gold)', background: 'var(--gold-glow)',
-    borderLeftColor: 'var(--gold)',
+    color: 'var(--accent)', background: 'var(--accent-glow)',
+    borderLeftColor: 'var(--accent)',
   },
   itemHover: {
     color: 'var(--text)', background: 'var(--bg3)',
   },
   main: { flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' },
   breadcrumb: {
-    padding: '0.55rem 1.25rem',
+    padding: '0.85rem 1.15rem',
     fontSize: '0.78rem', color: 'var(--text-dim)',
-    borderBottom: '1px solid var(--border)',
-    background: 'var(--bg2)',
+    borderBottom: '1px solid rgba(255,255,255,0.06)',
+    background: 'rgba(255,255,255,0.03)',
     display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap',
     flexShrink: 0,
   },
-  crumb: { cursor: 'pointer', transition: 'color 0.12s' },
+  crumb: { cursor: 'pointer', transition: 'color 0.12s ease' },
   crumbSep: { color: 'var(--text-faint)', fontSize: '0.7rem' },
   mainContent: { flex: 1, overflow: 'auto' },
   placeholder: {
     height: '100%', display: 'flex', flexDirection: 'column',
     alignItems: 'center', justifyContent: 'center',
     color: 'var(--text-faint)', gap: '0.6rem', padding: '2rem',
+    background: 'var(--bg2)', borderRadius: 'var(--radius-lg)',
   },
   placeholderIcon: { fontSize: '2.5rem', opacity: 0.5 },
   placeholderText: { fontSize: '0.875rem', textAlign: 'center', lineHeight: 1.7 },
@@ -168,13 +171,16 @@ export default function FileBrowser({ rootPath = '', tab }) {
   if (view === 'pdf' && selectedFile) {
     return (
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <div style={s.breadcrumb}>
-          <span style={{ ...s.crumb, color: 'var(--gold)' }} onClick={exitViewer}>← Back</span>
+        <div style={s.breadcrumb} className="browser-breadcrumb">
+          <span style={{ ...s.crumb, color: 'var(--accent)' }} onClick={exitViewer}>← Back</span>
           <span style={s.crumbSep}>/</span>
           <span>{selectedFile.name}</span>
         </div>
         <div style={{ flex: 1, overflow: 'hidden' }}>
-          <PdfViewer filePath={selectedFile.path} />
+          <PdfViewer
+            filePath={selectedFile.path}
+            onExtracted={data => { setMcqData(data); setView('mcq') }}
+          />
         </div>
       </div>
     )
@@ -203,18 +209,18 @@ export default function FileBrowser({ rootPath = '', tab }) {
 
   /* ── File browser ── */
   return (
-    <div style={s.wrap}>
-      <div style={s.sidebar}>
+    <div style={s.wrap} className="file-browser">
+      <div style={s.sidebar} className="browser-sidebar">
         {/* Import button — only on MCQ / current affairs tabs */}
         {isMcqTab && (
-          <div style={s.sidebarTop}>
+          <div style={s.sidebarTop} className="sidebar-top">
             <button style={s.importBtn} onClick={() => setView('import')}>
               ✦ Import MCQs with AI
             </button>
           </div>
         )}
 
-        <div style={s.sidebarList}>
+        <div style={s.sidebarList} className="sidebar-list">
           {loading && <div style={s.loadingRow}><span className="spinner" /> Loading…</div>}
           {error && <div style={s.errorRow}>⚠ {error}</div>}
 
@@ -247,9 +253,9 @@ export default function FileBrowser({ rootPath = '', tab }) {
         </div>
       </div>
 
-      <div style={s.main}>
+      <div style={s.main} className="browser-main">
         {/* Breadcrumb */}
-        <div style={s.breadcrumb}>
+        <div style={s.breadcrumb} className="browser-breadcrumb">
           {stack.map((crumb, i) => (
             <React.Fragment key={i}>
               {i > 0 && <span style={s.crumbSep}>›</span>}

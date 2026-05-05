@@ -4,24 +4,24 @@ import { saveConfig, loadConfig } from '../utils/github.js'
 const styles = {
   overlay: {
     position: 'fixed', inset: 0,
-    background: 'rgba(0,0,0,0.75)',
+    background: 'rgba(0,0,0,0.72)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     zIndex: 1000,
     backdropFilter: 'blur(4px)',
   },
   modal: {
     background: 'var(--bg2)',
-    border: '1px solid var(--border)',
+    border: '1px solid rgba(255,255,255,0.08)',
     borderRadius: 'var(--radius-lg)',
     padding: '2rem',
     width: '100%',
-    maxWidth: 460,
+    maxWidth: 520,
     animation: 'fadeIn 0.2s ease',
   },
   title: {
     fontFamily: 'var(--font-display)',
     fontSize: '1.3rem',
-    color: 'var(--gold)',
+    color: 'var(--accent)',
     marginBottom: '1.5rem',
   },
   field: { marginBottom: '1.2rem' },
@@ -36,12 +36,12 @@ const styles = {
   input: {
     width: '100%',
     background: 'var(--bg3)',
-    border: '1px solid var(--border)',
-    borderRadius: 'var(--radius)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: 'var(--radius-lg)',
     color: 'var(--text)',
-    padding: '0.6rem 0.8rem',
-    fontSize: '0.9rem',
-    transition: 'border-color var(--transition)',
+    padding: '0.75rem 0.95rem',
+    fontSize: '0.95rem',
+    transition: 'border-color var(--transition), box-shadow var(--transition)',
   },
   hint: {
     fontSize: '0.75rem',
@@ -50,20 +50,20 @@ const styles = {
   },
   actions: { display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '1.5rem' },
   btnCancel: {
-    padding: '0.5rem 1.1rem',
-    borderRadius: 'var(--radius)',
-    border: '1px solid var(--border)',
+    padding: '0.65rem 1.15rem',
+    borderRadius: 'var(--radius-lg)',
+    border: '1px solid rgba(255,255,255,0.08)',
     color: 'var(--text-dim)',
-    fontSize: '0.875rem',
+    fontSize: '0.9rem',
     background: 'transparent',
   },
   btnSave: {
-    padding: '0.5rem 1.3rem',
-    borderRadius: 'var(--radius)',
-    background: 'var(--gold)',
-    color: '#0f0e0c',
+    padding: '0.65rem 1.25rem',
+    borderRadius: 'var(--radius-lg)',
+    background: 'var(--accent)',
+    color: '#fff',
     fontWeight: 600,
-    fontSize: '0.875rem',
+    fontSize: '0.9rem',
   },
   saved: {
     fontSize: '0.8rem',
@@ -90,8 +90,8 @@ export default function Settings({ onClose }) {
   }
 
   return (
-    <div style={styles.overlay} onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={styles.modal} className="fade-in">
+    <div style={styles.overlay} className="settings-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div style={styles.modal} className="settings-modal fade-in">
         <div style={styles.title}>⚙ Settings</div>
 
         <div style={styles.field}>
@@ -141,7 +141,7 @@ export default function Settings({ onClose }) {
           </div>
         </div>
 
-        <div style={styles.actions}>
+        <div style={styles.actions} className="settings-actions">
           {saved && <span style={styles.saved}>✓ Saved!</span>}
           <button style={styles.btnCancel} onClick={onClose}>Cancel</button>
           <button style={styles.btnSave} onClick={handleSave}>Save</button>

@@ -3,17 +3,17 @@ import { scoreSession } from '../utils/mcq.js'
 
 /* ─── Styles ─────────────────────────────────────────────────────────────── */
 const s = {
-  wrap: { padding: '1.5rem 2rem', maxWidth: 780, margin: '0 auto', paddingBottom: '4rem' },
+  wrap: { padding: '1.25rem 1rem', maxWidth: 720, width: '100%', margin: '0 auto', paddingBottom: '3rem' },
   header: {
     display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
-    marginBottom: '1.25rem', gap: '1rem',
+    marginBottom: '1.15rem', gap: '1rem',
   },
   titleBlock: {},
-  title: { fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--text)', lineHeight: 1.3 },
+  title: { fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: 'var(--text)', lineHeight: 1.3, fontWeight: 600 },
   subtitle: { fontSize: '0.78rem', color: 'var(--text-faint)', marginTop: '0.2rem', letterSpacing: '0.04em' },
   progressRow: { display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' },
   progressBar: { flex: 1, height: 3, background: 'var(--border)', borderRadius: 2, overflow: 'hidden' },
-  progressFill: { height: '100%', background: 'var(--gold)', borderRadius: 2, transition: 'width 0.4s ease' },
+  progressFill: { height: '100%', background: 'var(--accent)', borderRadius: 2, transition: 'width 0.4s ease' },
   progressLabel: { fontSize: '0.75rem', color: 'var(--text-faint)', whiteSpace: 'nowrap' },
 
   // Question number strip
@@ -27,25 +27,25 @@ const s = {
   // Card
   qCard: {
     background: 'var(--bg2)', border: '1px solid var(--border)',
-    borderRadius: 'var(--radius-lg)', padding: '1.75rem',
+    borderRadius: 'var(--radius-lg)', padding: '1.65rem',
     marginBottom: '1rem', animation: 'fadeIn 0.2s ease',
-    boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
+    boxShadow: '0 14px 35px rgba(0,0,0,0.14)',
   },
   qMeta: { display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.85rem' },
   qBadge: {
     fontSize: '0.68rem', letterSpacing: '0.08em', textTransform: 'uppercase',
-    color: 'var(--gold)', background: 'var(--gold-glow)',
-    border: '1px solid rgba(201,168,76,0.2)',
+    color: 'var(--accent)', background: 'var(--accent-glow)',
+    border: '1px solid rgba(16,185,129,0.2)',
     borderRadius: 4, padding: '0.15rem 0.5rem',
   },
   qText: { fontSize: '0.975rem', lineHeight: 1.75, color: 'var(--text)', marginBottom: '1.25rem' },
 
   optBtn: {
     display: 'flex', alignItems: 'flex-start', gap: '0.75rem', width: '100%', textAlign: 'left',
-    padding: '0.7rem 1rem', marginBottom: '0.45rem',
-    borderRadius: 'var(--radius)', border: '1px solid var(--border)',
-    color: 'var(--text)', fontSize: '0.9rem', background: 'var(--bg3)',
-    transition: 'all 0.15s ease', cursor: 'pointer', lineHeight: 1.5,
+    padding: '0.95rem 1rem', marginBottom: '0.55rem',
+    borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)',
+    color: 'var(--text)', fontSize: '0.95rem', background: 'var(--bg3)',
+    transition: 'transform 0.15s ease, border-color 0.15s ease, background 0.15s ease', cursor: 'pointer', lineHeight: 1.55,
   },
   optLetter: {
     minWidth: 22, height: 22, borderRadius: 3,
@@ -57,26 +57,26 @@ const s = {
   explainBox: {
     marginTop: '0.85rem', padding: '0.7rem 0.9rem',
     borderRadius: 'var(--radius)', background: 'var(--bg)',
-    borderLeft: '2px solid var(--gold-dim)',
+    borderLeft: '2px solid var(--accent-dim)',
     fontSize: '0.83rem', color: 'var(--text-dim)', lineHeight: 1.65,
     animation: 'fadeIn 0.2s ease',
   },
 
   // Nav bar
   navBar: {
-    display: 'flex', gap: '0.5rem', justifyContent: 'space-between',
-    alignItems: 'center', marginTop: '0.75rem',
+    display: 'flex', gap: '0.75rem', justifyContent: 'space-between',
+    alignItems: 'center', marginTop: '0.85rem', flexWrap: 'wrap',
   },
-  navGroup: { display: 'flex', gap: '0.5rem' },
+  navGroup: { display: 'flex', gap: '0.5rem', flexWrap: 'wrap' },
   navBtn: {
-    padding: '0.5rem 1rem', borderRadius: 'var(--radius)',
+    padding: '0.55rem 0.95rem', borderRadius: 'var(--radius)',
     border: '1px solid var(--border)', color: 'var(--text-dim)',
-    fontSize: '0.82rem', background: 'var(--bg3)',
-    transition: 'all 0.15s ease', cursor: 'pointer',
+    fontSize: '0.84rem', background: 'var(--bg3)',
+    transition: 'all 0.15s ease', cursor: 'pointer', minWidth: 110,
   },
   submitBtn: {
     padding: '0.5rem 1.4rem', borderRadius: 'var(--radius)',
-    background: 'var(--gold)', color: '#0f0e0c',
+    background: 'var(--accent)', color: '#fff',
     fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.02em',
     transition: 'opacity 0.15s', cursor: 'pointer',
   },
@@ -88,16 +88,16 @@ const s = {
     borderRadius: 'var(--radius-lg)', padding: '2.5rem 2rem', textAlign: 'center',
     boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
   },
-  resultTitle: { fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: 'var(--text-dim)', marginBottom: '1.25rem' },
+  resultTitle: { fontFamily: 'var(--font-display)', fontSize: '1.6rem', color: 'var(--text-dim)', marginBottom: '1.25rem', fontWeight: 700 },
   scoreRing: {
     width: 120, height: 120, borderRadius: '50%',
-    border: '3px solid var(--gold)',
+    border: '3px solid var(--accent)',
     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
     margin: '0 auto 1.5rem',
-    background: 'var(--gold-glow)',
+    background: 'var(--accent-glow)',
   },
-  scoreNum: { fontFamily: 'var(--font-display)', fontSize: '2.4rem', color: 'var(--gold)', lineHeight: 1 },
-  scoreUnit: { fontSize: '0.72rem', color: 'var(--gold-dim)', letterSpacing: '0.08em', textTransform: 'uppercase' },
+  scoreNum: { fontFamily: 'var(--font-display)', fontSize: '2.4rem', color: 'var(--accent)', lineHeight: 1 },
+  scoreUnit: { fontSize: '0.72rem', color: 'var(--accent-dim)', letterSpacing: '0.08em', textTransform: 'uppercase' },
   stats: { display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '1.75rem' },
   stat: {
     padding: '0.6rem 1.1rem', borderRadius: 'var(--radius)',
@@ -117,32 +117,32 @@ const s = {
 }
 
 /* ─── Option styling based on state ─────────────────────────────────────── */
-// During practice: only highlight selected (gold). No answer reveal.
-// After submit (review): show correct=green, wrong=red
-function optStyle(i, selected, correct, mode) {
-  const base = { ...s.optBtn }
-  const letterBase = { ...s.optLetter }
+// During practice: only highlight selected (teal). No answer reveal.
+  // After submit (review): show correct=green, wrong=red
+  function optStyle(i, selected, correct, mode) {
+    const base = { ...s.optBtn }
+    const letterBase = { ...s.optLetter }
 
-  if (mode === 'practice') {
-    if (i === selected) {
-      base.background = 'var(--gold-glow)'
-      base.borderColor = 'rgba(201,168,76,0.4)'
-      base.color = 'var(--gold)'
-      letterBase.background = 'var(--gold)'
-      letterBase.color = '#0f0e0c'
-      letterBase.borderColor = 'var(--gold)'
-    }
-  } else {
-    // review mode — show correct/wrong
-    if (i === correct) {
-      base.background = 'rgba(106,170,110,0.1)'
-      base.borderColor = 'var(--green)'
-      base.color = 'var(--green)'
-      letterBase.background = 'var(--green)'
-      letterBase.color = '#0f0e0c'
-      letterBase.borderColor = 'var(--green)'
-    } else if (i === selected && i !== correct) {
-      base.background = 'rgba(192,80,77,0.1)'
+    if (mode === 'practice') {
+      if (i === selected) {
+        base.background = 'rgba(16,185,129,0.12)'
+        base.borderColor = 'var(--accent)'
+        base.color = 'var(--accent)'
+        letterBase.background = 'var(--accent)'
+        letterBase.color = '#fff'
+        letterBase.borderColor = 'var(--accent)'
+      }
+    } else {
+      // review mode — show correct/wrong
+      if (i === correct) {
+        base.background = 'rgba(16,185,129,0.1)'
+        base.borderColor = 'var(--green)'
+        base.color = 'var(--green)'
+        letterBase.background = 'var(--green)'
+        letterBase.color = '#fff'
+        letterBase.borderColor = 'var(--green)'
+      } else if (i === selected && i !== correct) {
+        base.background = 'rgba(239,68,68,0.1)'
       base.borderColor = 'var(--red)'
       base.color = 'var(--red)'
       letterBase.background = 'var(--red)'
@@ -159,23 +159,23 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E']
 export default function MCQPractice({ mcqData, onBack }) {
   const { title, questions } = mcqData
   const [cur, setCur] = useState(0)
-  const [answers, setAnswers] = useState({})   // index → chosen option
+  const [answers, setAnswers] = useState(() => Array(questions.length).fill(undefined))
   const [submitted, setSubmitted] = useState(false)
   const [showReview, setShowReview] = useState(false)
 
   const q = questions[cur]
   const selected = answers[cur]
-  const attempted = Object.keys(answers).length
+  const attempted = answers.filter(ans => ans !== undefined).length
   const progress = (attempted / questions.length) * 100
 
   function select(i) {
     if (submitted) return
-    // toggle off if same option clicked again
-    if (answers[cur] === i) {
-      setAnswers(p => { const n = { ...p }; delete n[cur]; return n })
-    } else {
-      setAnswers(p => ({ ...p, [cur]: i }))
-    }
+    if (selected === i) return
+    setAnswers(prev => {
+      const next = [...prev]
+      next[cur] = i
+      return next
+    })
   }
 
   const score = submitted ? scoreSession(questions, answers) : null
@@ -183,7 +183,7 @@ export default function MCQPractice({ mcqData, onBack }) {
   /* ── Result screen ── */
   if (submitted && !showReview) {
     return (
-      <div style={s.resultWrap}>
+      <div style={s.resultWrap} className="result-wrap">
         <div style={s.resultCard}>
           <div style={s.resultTitle}>Session Complete</div>
           <div style={s.scoreRing}>
@@ -220,7 +220,7 @@ export default function MCQPractice({ mcqData, onBack }) {
   /* ── Review screen ── */
   if (submitted && showReview) {
     return (
-      <div style={s.reviewWrap} className="fade-in">
+      <div style={s.reviewWrap} className="review-wrap fade-in">
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
           <button style={s.navBtn} onClick={() => setShowReview(false)}>← Score</button>
           <span style={s.title}>{title}</span>
@@ -263,7 +263,7 @@ export default function MCQPractice({ mcqData, onBack }) {
 
   /* ── Practice screen ── */
   return (
-    <div style={s.wrap} className="fade-in">
+    <div style={s.wrap} className="mcq-practice fade-in">
       <div style={s.header}>
         <div style={s.titleBlock}>
           <div style={s.title}>{title}</div>
@@ -279,7 +279,7 @@ export default function MCQPractice({ mcqData, onBack }) {
       </div>
 
       {/* Number strip */}
-      <div style={s.qStrip}>
+      <div style={s.qStrip} className="q-strip">
         {questions.map((_, i) => {
           const isCur = i === cur
           const isDone = answers[i] !== undefined
@@ -288,9 +288,9 @@ export default function MCQPractice({ mcqData, onBack }) {
               key={i}
               style={{
                 ...s.qDot,
-                borderColor: isCur ? 'var(--gold)' : isDone ? 'var(--border)' : 'var(--border)',
-                background: isCur ? 'var(--gold-glow)' : isDone ? 'var(--bg3)' : 'transparent',
-                color: isCur ? 'var(--gold)' : isDone ? 'var(--text-dim)' : 'var(--text-faint)',
+                borderColor: isCur ? 'var(--accent)' : isDone ? 'var(--border)' : 'var(--border)',
+                background: isCur ? 'var(--accent-glow)' : isDone ? 'var(--bg3)' : 'transparent',
+                color: isCur ? 'var(--accent)' : isDone ? 'var(--text-dim)' : 'var(--text-faint)',
                 fontWeight: isCur ? 700 : 400,
               }}
               onClick={() => setCur(i)}
@@ -302,7 +302,7 @@ export default function MCQPractice({ mcqData, onBack }) {
       </div>
 
       {/* Question card */}
-      <div style={s.qCard}>
+      <div style={s.qCard} className="q-card">
         <div style={s.qMeta}>
           <span style={s.qBadge}>Q {cur + 1} / {questions.length}</span>
         </div>
@@ -310,7 +310,7 @@ export default function MCQPractice({ mcqData, onBack }) {
         {q.options.map((opt, i) => {
           const { btn, letter } = optStyle(i, selected, q.answer, 'practice')
           return (
-            <button key={i} style={btn} onClick={() => select(i)}>
+            <button key={`${cur}-${i}`} type="button" className="opt-btn" style={btn} onClick={() => select(i)}>
               <span style={letter}>{LETTERS[i]}</span>
               <span>{opt}</span>
             </button>
@@ -319,7 +319,7 @@ export default function MCQPractice({ mcqData, onBack }) {
       </div>
 
       {/* Nav */}
-      <div style={s.navBar}>
+      <div style={s.navBar} className="nav-bar">
         <div style={s.navGroup}>
           <button style={s.navBtn} onClick={onBack}>✕ Exit</button>
           <button style={s.navBtn} disabled={cur === 0} onClick={() => setCur(p => p - 1)}>← Prev</button>

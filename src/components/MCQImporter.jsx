@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { parseMCQ } from '../utils/mcq.js'
+import { parseMCQ, extractMCQsFromText } from '../utils/mcq.js'
 
 /* ─────────────────────────────────────────────────────────────────────────────
    MCQImporter
@@ -110,13 +110,21 @@ Rules:
 - Return ONLY the JSON object, no other text`
 
 async function callClaude(text, title) {
+  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY
+  if (!apiKey) {
+    throw new Error('Missing Anthropic API key. Set VITE_ANTHROPIC_API_KEY in your .env file.')
+  }
+
   const prompt = title
     ? `Title hint: "${title}"\n\nMCQ text:\n${text}`
     : `MCQ text:\n${text}`
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 4000,
@@ -128,11 +136,26 @@ async function callClaude(text, title) {
     const e = await res.json().catch(() => ({}))
     throw new Error(e.error?.message || `API error ${res.status}`)
   }
+
   const data = await res.json()
-  const raw = data.content?.find(b => b.type === 'text')?.text || ''
-  // Strip any accidental markdown fences
+  const content = data.content || data.completion?.content || data.completion?.message?.content || []
+  const raw = Array.isArray(content)
+    ? (content.find(b => b.type === 'text')?.text || content.map(c => c.text || '').join(' '))
+    : typeof content === 'string'
+      ? content
+      : ''
   const clean = raw.replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim()
-  return parseMCQ(clean)
+
+  try {
+    return parseMCQ(clean)
+  } catch (err) {
+    // Fallback: if AI output isn't valid JSON, try extracting MCQs directly from text.
+    const fallback = extractMCQsFromText(raw, title)
+    if (fallback.questions.length > 0) {
+      return fallback
+    }
+    throw new Error('AI response was not valid MCQ JSON and no questions could be inferred from the text.')
+  }
 }
 
 export default function MCQImporter({ onImported, onCancel }) {
@@ -142,14 +165,36 @@ export default function MCQImporter({ onImported, onCancel }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [preview, setPreview] = useState(null)
+  const [parseSource, setParseSource] = useState(null)
   const [dragging, setDragging] = useState(false)
   const fileRef = useRef()
 
   async function handleParse() {
     if (!text.trim()) return
-    setLoading(true); setError(null); setPreview(null)
+    setLoading(true); setError(null); setPreview(null); setParseSource(null)
     try {
-      const result = await callClaude(text.trim(), title.trim())
+      const content = text.trim()
+      let result
+      if (!import.meta.env.VITE_ANTHROPIC_API_KEY) {
+        setParseSource('local')
+        result = extractMCQsFromText(content, title.trim())
+        if (result.questions.length === 0) {
+          throw new Error('No questions were found in the uploaded text. Try formatting the content with numbered questions and answer keys.')
+        }
+      } else {
+        try {
+          result = await callClaude(content, title.trim())
+          setParseSource('ai')
+        } catch (aiError) {
+          const fallback = extractMCQsFromText(content, title.trim())
+          if (fallback.questions.length > 0) {
+            result = fallback
+            setParseSource('local-fallback')
+          } else {
+            throw aiError
+          }
+        }
+      }
       setPreview(result)
     } catch (e) {
       setError(e.message)
@@ -226,6 +271,7 @@ export default function MCQImporter({ onImported, onCancel }) {
             </div>
             <div style={s.hint}>
               For PDFs: open in any PDF reader → select all text → copy → use Paste Text tab.
+              If you do not have an API key, the app will still try to infer questions locally.
             </div>
           </>
         )}
@@ -235,6 +281,11 @@ export default function MCQImporter({ onImported, onCancel }) {
         {preview && (
           <div style={s.preview}>
             <div style={s.previewTitle}>Parsed — {preview.questions.length} questions found</div>
+            {parseSource && (
+              <div style={{ ...s.hint, marginTop: '0.4rem', color: 'var(--text)'}}>
+                Parsed using {parseSource === 'ai' ? 'AI parsing' : parseSource === 'local' ? 'local text parsing' : 'local fallback parsing'}.
+              </div>
+            )}
             {preview.questions.slice(0, 3).map((q, i) => (
               <div key={i} style={s.previewQ}>Q{i + 1}: {q.q.slice(0, 90)}{q.q.length > 90 ? '…' : ''}</div>
             ))}
